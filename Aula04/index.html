@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da forca</title>
+</head>
+<body onload="chooseRandomWord()">
+    <input type="text" id="user-guess">
+    <button type="submit" id="btn-guess" onclick="testGuess()">Adivinhar</button>
+    <h1>Número de tentativas restantes: <span id="numTries">6</span></h1>
+    <p id="solution"></p>
+</body>
+</html>
+<script>
+    const words = ["python", "javascript", "lua"];
+    const solution = document.getElementById("solution");
+    let numTries = 6;
+    let word
+    let currentGuess
+
+    function chooseRandomWord() {
+        const index = Math.floor(Math.random()  * words.length);
+        word = words[index];
+        currentGuess = Array(word.length).fill('_');
+        solution.innerText = "_".repeat(word.length);
+    }
+
+    function testGuess() {
+        if (numTries === 0) {
+            alert("Jogo acabou :C")
+            return null
+        }
+
+        let userLetter = document.getElementById("user-guess").value.toLowerCase();
+        let guessIsCorrect = false;
+
+        for (let i = 0; i < word.length; i++) {
+            if (userLetter === word[i] && currentGuess[i] === "_") { 
+                currentGuess[i] = userLetter;
+                guessIsCorrect = true;
+            }
+        }
+        solution.innerText = currentGuess.join("");
+        if(!guessIsCorrect) {
+            numTries--;
+            document.getElementById("numTries").innerText = numTries;
+        }
+    }
+</script>
