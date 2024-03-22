@@ -5,35 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da forca</title>
 </head>
-<body onload="chooseRandomWord()">
-    <input type="text" id="user-guess">
-    <button type="submit" id="btn-guess" onclick="testGuess()">Adivinhar</button>
+<body onload="startGame()">
+    <input type="text" id="user-guess" maxlength="1">
+    <button id="btn-guess" onclick="testGuess()">Adivinhar</button>
+    <button id="btn-restart" onclick="startGame()">Reiniciar jogo</button>
     <h1>Número de tentativas restantes: <span id="numTries">6</span></h1>
+    <p id="guessed-letters"></p>
     <p id="solution"></p>
 </body>
 </html>
 <script>
-    const words = ["python", "javascript", "lua"];
+    const words = ["software", "javascript", "python", "pedras", "computador"];
     const solution = document.getElementById("solution");
     let numTries = 6;
-    let word
-    let currentGuess
+    let word;
+    let currentGuess;
+    let guessedLetters = [];
+    let guessIsCorrect
 
-    function chooseRandomWord() {
+    function startGame() {
         const index = Math.floor(Math.random()  * words.length);
         word = words[index];
         currentGuess = Array(word.length).fill('_');
         solution.innerText = "_".repeat(word.length);
+        numTries = 6;
+        document.getElementById("numTries").innerText = numTries;
+        document.getElementById("guessed-letters").innerText = " ";
+    }
+
+    function checkNumTries() {
+        if (numTries === 0) {
+            alert("Suas tentativas acabaram :(...\nA palavra certa era: " + word);
+            startGame();
+            return false;
+        }
     }
 
     function testGuess() {
-        if (numTries === 0) {
-            alert("Jogo acabou :C")
-            return null
+        let userLetter = document.getElementById("user-guess").value.toLowerCase();
+        guessIsCorrect = false;
+        
+        for (let i = 0; i < guessedLetters.length; i++) {
+            if (userLetter == guessedLetters[i]) {
+            alert("Essa letra já foi utilizada. Tente outra :)");
+            return null;
+            }
         }
 
-        let userLetter = document.getElementById("user-guess").value.toLowerCase();
-        let guessIsCorrect = false;
+        guessedLetters.push(userLetter);
+        document.getElementById("guessed-letters").innerText = guessedLetters.join(" ");
 
         for (let i = 0; i < word.length; i++) {
             if (userLetter === word[i] && currentGuess[i] === "_") { 
@@ -41,10 +61,15 @@
                 guessIsCorrect = true;
             }
         }
+
         solution.innerText = currentGuess.join("");
+
         if(!guessIsCorrect) {
             numTries--;
             document.getElementById("numTries").innerText = numTries;
         }
+
+        checkNumTries();
     }
+
 </script>
