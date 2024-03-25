@@ -20,7 +20,7 @@
     let numTries = 6;
     let word;
     let currentGuess;
-    let guessedLetters = [];
+    let guessedLetters;
     let guessIsCorrect
     
     /*
@@ -32,6 +32,8 @@
 
     */
     function startGame() {
+        guessedLetters = [];
+        document.getElementById("numTries").innerText = " "
         const index = Math.floor(Math.random()  * words.length);
         word = words[index]; // Ecolhendo uma palavra com base num indice aleatório
         currentGuess = Array(word.length).fill('_');
