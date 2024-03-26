@@ -33,7 +33,7 @@
     */
     function startGame() {
         guessedLetters = [];
-        document.getElementById("numTries").innerText = " "
+        document.getElementById("guessed-Letters").innerText = " "
         const index = Math.floor(Math.random()  * words.length);
         word = words[index]; // Ecolhendo uma palavra com base num indice aleatório
         currentGuess = Array(word.length).fill('_');
